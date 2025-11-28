@@ -1,3 +1,7 @@
+using ElevatorApi.Services;
+using ElevatorApi.Services.Interface;
+using ElevatorApi.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddTransient<IElevatorService, ElevatorService>();
+builder.Services.AddTransient<IHttpResponseWrapper, HttpResponseWrapper>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
