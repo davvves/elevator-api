@@ -1,4 +1,8 @@
+using ElevatorApi.Models;
+using ElevatorApi.Services.Interface;
+using ElevatorApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ElevatorApi.Controllers
 {
@@ -6,5 +10,41 @@ namespace ElevatorApi.Controllers
     [Route("[controller]")]
     public class ElevatorController : ControllerBase
     {
+        private readonly IElevatorService elevatorService;
+        private readonly IHttpResponseWrapper httpResponseWrapper;
+
+        public ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper)
+        {
+            this.elevatorService = elevatorService;
+            this.httpResponseWrapper = httpResponseWrapper;
+        }
+
+        [HttpGet("GetPassengerRequests")]
+        public ApiResponse<IEnumerable<FloorRequest>> GetPassengerRequests()
+        {
+            try
+            {
+                var requests = elevatorService.GetPassengerRequests();
+                return new ApiResponse<IEnumerable<FloorRequest>>(requests);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                UpdateHttpStatusCode(ex);
+                return new ApiResponse<IEnumerable<FloorRequest>>(null, ex.Message);
+            }
+        }
+
+        private void UpdateHttpStatusCode(Exception ex)
+        {
+            if (ex is ArgumentNullException || ex is ArgumentException)
+            {
+                httpResponseWrapper.GetCurrentResponse()?.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                httpResponseWrapper.GetCurrentResponse()?.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+        }
     }
 }
