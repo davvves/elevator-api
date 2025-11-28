@@ -35,6 +35,23 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CallToFloor")]
+        public ApiResponse<Elevator> CallToFloor([FromBody] int number)
+        {
+            try
+            {
+                var elevator = elevatorService.CallToFloor(number);
+                return new ApiResponse<Elevator>(elevator);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                UpdateHttpStatusCode(ex);
+                return new ApiResponse<Elevator>(null, ex.Message);
+            }
+        }
+
         private void UpdateHttpStatusCode(Exception ex)
         {
             if (ex is ArgumentNullException || ex is ArgumentException)
