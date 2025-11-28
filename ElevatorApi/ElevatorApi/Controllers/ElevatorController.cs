@@ -52,6 +52,23 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RequestFloor")]
+        public ApiResponse<Elevator> RequestFloor([FromBody] int number)
+        {
+            try
+            {
+                var elevator = elevatorService.RequestFloor(number);
+                return new ApiResponse<Elevator>(elevator);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                UpdateHttpStatusCode(ex);
+                return new ApiResponse<Elevator>(null, ex.Message);
+            }
+        }
+
         private void UpdateHttpStatusCode(Exception ex)
         {
             if (ex is ArgumentNullException || ex is ArgumentException)

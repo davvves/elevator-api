@@ -32,11 +32,17 @@ namespace ElevatorApi.Models
 
         public void AddPassengerRequest(int floor)
         {
-            FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Passenger));
+            if (!FloorRequests.Any(req => req.Floor == floor && req.RequestType == FloorRequestType.Passenger))
+            {
+                FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Passenger));
+            }
         }
         public void AddCallRequest(int floor)
         {
-            FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Call));
+            if (!FloorRequests.Any(req => req.Floor == floor && req.RequestType == FloorRequestType.Call))
+            {
+                FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Call));
+            }
         }
 
         public Floor NextFloor
