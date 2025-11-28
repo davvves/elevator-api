@@ -1,8 +1,8 @@
 ﻿namespace ElevatorApi.Models
 {
-    public class Floor
+    public class Floor(int number)
     {
-
+        public int Number { get; set; } = number;
     }
 
 }
