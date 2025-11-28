@@ -5,6 +5,15 @@ namespace ElevatorApi.Services
 {
     public class ElevatorService : IElevatorService
     {
+        public Elevator CallToFloor(int number)
+        {
+            var elevator = new Elevator();
+
+            elevator.AddCallRequest(number);
+
+            return elevator;
+        }
+
         public IEnumerable<FloorRequest> GetPassengerRequests()
         {
             var elevator = new Elevator();
