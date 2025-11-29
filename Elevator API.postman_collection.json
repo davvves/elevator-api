@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "0c0df098-21df-40f8-9dce-b38f723b9b9f",
+		"name": "Elevator API",
+		"description": "### Elevator API Collection\n\nThis collection provides example requests for frontend integration with the mock data provided in the Elevator API, including requests that will generate an error state so error handling can be introduced.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50351626",
+		"_collection_link": "https://davidmboeser-4512670.postman.co/workspace/David-Boeser's-Workspace~12330656-d87d-4c7b-879d-8efa0d0c177e/collection/50351626-0c0df098-21df-40f8-9dce-b38f723b9b9f?action=share&source=collection_link&creator=50351626"
+	},
+	"item": [
+		{
+			"name": "Get Passenger Requests",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/elevator/getpassengerrequests",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"getpassengerrequests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Call To Floor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "5",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/elevator/calltofloor",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"calltofloor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Call To Floor - invalid floor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "-1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/elevator/calltofloor",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"calltofloor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request Floor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "8",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/elevator/requestfloor",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"requestfloor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request Floor - invalid floor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "-1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/elevator/requestfloor",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"requestfloor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Next Floor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/elevator/getnextfloor?currentFloor=20",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"getnextfloor"
+					],
+					"query": [
+						{
+							"key": "currentFloor",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Next Floor - invalid floor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/elevator/getnextfloor?currentFloor=-1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"elevator",
+						"getnextfloor"
+					],
+					"query": [
+						{
+							"key": "currentFloor",
+							"value": "-1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		}
+	]
+}
