@@ -6,7 +6,7 @@ namespace ElevatorApi.Services.Interfaces
     {
         IEnumerable<FloorRequest> GetPassengerRequests();
 
-        Elevator CallToFloor(int number);
+        Elevator CallToFloor(int number, bool up);
 
         Elevator RequestFloor(int number);
 

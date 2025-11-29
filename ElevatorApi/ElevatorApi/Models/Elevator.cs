@@ -2,6 +2,9 @@
 
 namespace ElevatorApi.Models
 {
+    /// <summary>
+    /// The class representing the elevator's current state
+    /// </summary>
     public class Elevator
     {
         public Elevator()
@@ -18,15 +21,31 @@ namespace ElevatorApi.Models
             this.FloorRequests = [];
         }
 
+        /// <summary>
+        /// The current floor of the elevator
+        /// </summary>
         public Floor CurrentFloor { get; set; }
 
+        /// <summary>
+        /// All the available floors for the elevator
+        /// </summary>
         public List<Floor> Floors { get; set; }
 
+        /// <summary>
+        /// All current requests the elevator has received
+        /// </summary>
         public List<FloorRequest> FloorRequests { get; set; }
 
+        /// <summary>
+        /// The current direction of the elevator
+        /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public Direction Direction { get; set; }
 
+        /// <summary>
+        /// Request a floor as a current passenger of the elevator (i.e. from the inside panel)
+        /// </summary>
+        /// <param name="floor">The floor number requested</param>
         public void AddPassengerRequest(int floor)
         {
             if (!FloorRequests.Any(req => req.Floor == floor))
@@ -34,14 +53,23 @@ namespace ElevatorApi.Models
                 FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Passenger));
             }
         }
-        public void AddCallRequest(int floor)
+
+        /// <summary>
+        /// Request that the elevator come to your current floor
+        /// </summary>
+        /// <param name="floor">The floor number requested</param>
+        /// <param name="up">Whether the request is for Up direction</param>
+        public void AddCallRequest(int floor, bool up)
         {
             if (!FloorRequests.Any(req => req.Floor == floor))
             {
-                FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Call));
+                FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Call, up ? Direction.Up : Direction.Down));
             }
         }
 
+        /// <summary>
+        /// The next floor the elevator will stop at
+        /// </summary>
         public Floor NextFloor
         {
             get
@@ -56,7 +84,7 @@ namespace ElevatorApi.Models
                 }
                 if (Direction == Direction.Up)
                 {
-                    var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number);
+                    var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number && x.Direction != Direction.Down);
                     if (nextHigherFloor != null)
                     {
                         return new Floor(nextHigherFloor.Floor);
@@ -64,7 +92,7 @@ namespace ElevatorApi.Models
                     else
                     {
                         Direction = Direction.Down;
-                        var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number);
+                        var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number && x.Direction != Direction.Up);
                         if (nextLowerFloor != null)
                         {
                             return new Floor(nextLowerFloor.Floor);
@@ -73,7 +101,7 @@ namespace ElevatorApi.Models
                 }
                 else if (Direction == Direction.Down)
                 {
-                    var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number);
+                    var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number && x.Direction != Direction.Up);
                     if (nextLowerFloor != null)
                     {
                         return new Floor(nextLowerFloor.Floor);
@@ -81,7 +109,7 @@ namespace ElevatorApi.Models
                     else
                     {
                         Direction = Direction.Up;
-                        var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number);
+                        var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number && x.Direction != Direction.Down);
                         if (nextHigherFloor != null)
                         {
                             return new Floor(nextHigherFloor.Floor);

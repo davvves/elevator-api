@@ -10,6 +10,10 @@ namespace ElevatorApi.Controllers
     [Route("[controller]")]
     public class ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper) : ControllerBase
     {
+        /// <summary>
+        /// Get all passenger requests from inside the elevator
+        /// </summary>
+        /// <returns>all passenger requests from inside the elevator, or an error message if generated</returns>
         [HttpGet("GetPassengerRequests")]
         public ApiResponse<IEnumerable<FloorRequest>> GetPassengerRequests()
         {
@@ -26,13 +30,18 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Call the elevator to a floor from that floor
+        /// </summary>
+        /// <param name="request">A request object containing the floor number and whether the request is for Up (true/false)</param>
+        /// <returns>The state of the elevator, or an error message if generated</returns>
         [HttpPost]
         [Route("CallToFloor")]
-        public ApiResponse<Elevator> CallToFloor([FromBody] int number)
+        public ApiResponse<Elevator> CallToFloor([FromBody] CallToFloorRequest request)
         {
             try
             {
-                var elevator = elevatorService.CallToFloor(number);
+                var elevator = elevatorService.CallToFloor(request.Number, request.Up);
                 return new ApiResponse<Elevator>(elevator);
             }
             catch (Exception ex)
@@ -43,6 +52,11 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Request a floor from inside the elevator as a passenger
+        /// </summary>
+        /// <param name="number">The floor number requested</param>
+        /// <returns>The state of the elevator, or an error message if generated</returns>
         [HttpPost]
         [Route("RequestFloor")]
         public ApiResponse<Elevator> RequestFloor([FromBody] int number)
@@ -60,6 +74,11 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Get the next floor of the elevator
+        /// </summary>
+        /// <param name="currentFloor">The current floor of the elevator</param>
+        /// <returns>The next floor of the elevator, or an error message if generated</returns>
         [HttpGet("GetNextFloor")]
         public ApiResponse<Floor> GetNextFloor(int currentFloor)
         {

@@ -17,19 +17,32 @@ namespace ElevatorApi.Tests
         [TestMethod]
         public void CallToFloor_Throws_Exception_If_Number_Is_Negative()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => elevatorService.CallToFloor(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => elevatorService.CallToFloor(-1, true));
         }
 
         [TestMethod]
         public void CallToFloor_Throws_Exception_If_Number_Is_Too_High()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => elevatorService.CallToFloor(21));
+            Assert.Throws<ArgumentOutOfRangeException>(() => elevatorService.CallToFloor(21, false));
+        }
+
+        [TestMethod]
+        public void CallToFloor_Throws_Exception_If_Going_Up_From_Top_Floor()
+        {
+            Assert.Throws<ArgumentException>(() => elevatorService.CallToFloor(20, true));
+        }
+
+
+        [TestMethod]
+        public void CallToFloor_Throws_Exception_If_Going_Down_From_Bottom_Floor()
+        {
+            Assert.Throws<ArgumentException>(() => elevatorService.CallToFloor(20, true));
         }
 
         [TestMethod]
         public void CallToFloor_Adds_Request_To_Requests()
         {
-            var elevator = elevatorService.CallToFloor(5);
+            var elevator = elevatorService.CallToFloor(5, true);
             Assert.IsTrue(elevator.FloorRequests.Where(req => req.RequestType == FloorRequestType.Call && req.Floor == 5).Any());
         }
 

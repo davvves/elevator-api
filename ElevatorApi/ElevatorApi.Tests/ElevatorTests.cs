@@ -25,9 +25,9 @@ namespace ElevatorApi.Tests
         [TestMethod]
         public void AddCallRequest_Does_Not_Add_Duplicates()
         {
-            elevator.AddCallRequest(5);
-            elevator.AddCallRequest(5);
-            elevator.AddCallRequest(5);
+            elevator.AddCallRequest(5, true);
+            elevator.AddCallRequest(5, false);
+            elevator.AddCallRequest(5, true);
             Assert.AreEqual(1, elevator.FloorRequests.Count(req => req.RequestType == FloorRequestType.Call));
         }
 
@@ -48,6 +48,16 @@ namespace ElevatorApi.Tests
             elevator.Direction = Direction.Down;
             var nextFloor = elevator.NextFloor;
             Assert.AreEqual(Direction.Up, elevator.Direction);
+        }
+
+        [TestMethod]
+        public void GetNextFloor_Skips_Request_If_Direction_Is_Opposite_Current_Direction()
+        {
+            elevator.CurrentFloor = new Floor(5);
+            elevator.AddCallRequest(10, false);
+            elevator.AddPassengerRequest(20);
+            var nextFloor = elevator.NextFloor;
+            Assert.AreEqual(20, nextFloor.Number);
         }
     }
 }

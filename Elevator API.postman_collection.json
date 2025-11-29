@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "5",
+					"raw": "{\r\n    \"Number\": 5,\r\n    \"Up\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -60,7 +60,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "-1",
+					"raw": "{\r\n    \"Number\": -1,\r\n    \"Up\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

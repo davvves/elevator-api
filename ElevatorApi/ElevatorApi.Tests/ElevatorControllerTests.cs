@@ -42,15 +42,15 @@ namespace ElevatorApi.Tests
         public void CallToFloor_Returns_Object_From_Service()
         {
             var returnValue = new Elevator();
-            elevatorServiceMock.Setup(x => x.CallToFloor(5)).Returns(returnValue);
-            Assert.AreEqual(returnValue, controller.CallToFloor(5).Response);
+            elevatorServiceMock.Setup(x => x.CallToFloor(5, true)).Returns(returnValue);
+            Assert.AreEqual(returnValue, controller.CallToFloor(new CallToFloorRequest { Number = 5, Up = true }).Response);
         }
 
         [TestMethod]
         public void CallToFloor_Returns_Message_If_Exception_Is_Thrown()
         {
-            elevatorServiceMock.Setup(x => x.CallToFloor(It.IsAny<int>())).Throws<ArgumentOutOfRangeException>();
-            Assert.IsGreaterThan(0, controller.CallToFloor(-1).Message.Length);
+            elevatorServiceMock.Setup(x => x.CallToFloor(It.IsAny<int>(), It.IsAny<bool>())).Throws<ArgumentOutOfRangeException>();
+            Assert.IsGreaterThan(0, controller.CallToFloor(new CallToFloorRequest { Number = -1, Up = true }).Message.Length);
         }
 
         [TestMethod]
