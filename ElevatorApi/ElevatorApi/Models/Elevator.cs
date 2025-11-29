@@ -13,7 +13,7 @@ namespace ElevatorApi.Models
             {
                 this.Floors.Add(new Floor(i));
             }
-            this.FloorRequests = new List<FloorRequest>();
+            this.FloorRequests = [];
         }
 
         public Floor CurrentFloor { get; set; }
@@ -48,7 +48,7 @@ namespace ElevatorApi.Models
                 FloorRequests = FloorRequests.Where(x => x.Floor != CurrentFloor.Number).ToList();
 
                 var sortedRequests = FloorRequests.OrderBy(x => x.Floor).ToList();
-                if (!sortedRequests.Any())
+                if (sortedRequests.Count == 0)
                 {
                     return CurrentFloor;
                 }

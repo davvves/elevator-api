@@ -8,17 +8,8 @@ namespace ElevatorApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ElevatorController : ControllerBase
+    public class ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper) : ControllerBase
     {
-        private readonly IElevatorService elevatorService;
-        private readonly IHttpResponseWrapper httpResponseWrapper;
-
-        public ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper)
-        {
-            this.elevatorService = elevatorService;
-            this.httpResponseWrapper = httpResponseWrapper;
-        }
-
         [HttpGet("GetPassengerRequests")]
         public ApiResponse<IEnumerable<FloorRequest>> GetPassengerRequests()
         {
