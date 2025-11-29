@@ -8,17 +8,8 @@ namespace ElevatorApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ElevatorController : ControllerBase
+    public class ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper) : ControllerBase
     {
-        private readonly IElevatorService elevatorService;
-        private readonly IHttpResponseWrapper httpResponseWrapper;
-
-        public ElevatorController(IElevatorService elevatorService, IHttpResponseWrapper httpResponseWrapper)
-        {
-            this.elevatorService = elevatorService;
-            this.httpResponseWrapper = httpResponseWrapper;
-        }
-
         [HttpGet("GetPassengerRequests")]
         public ApiResponse<IEnumerable<FloorRequest>> GetPassengerRequests()
         {
@@ -66,6 +57,22 @@ namespace ElevatorApi.Controllers
                 Console.WriteLine(ex.Message);
                 UpdateHttpStatusCode(ex);
                 return new ApiResponse<Elevator>(null, ex.Message);
+            }
+        }
+
+        [HttpGet("GetNextFloor")]
+        public ApiResponse<Floor> GetNextFloor(int currentFloor)
+        {
+            try
+            {
+                var floor = elevatorService.GetNextFloor(currentFloor);
+                return new ApiResponse<Floor>(floor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                UpdateHttpStatusCode(ex);
+                return new ApiResponse<Floor>(null, ex.Message);
             }
         }
 

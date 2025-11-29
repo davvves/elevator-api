@@ -6,13 +6,14 @@ namespace ElevatorApi.Models
     {
         public Elevator()
         {
+            this.Direction = Direction.Up;
             this.CurrentFloor = new Floor(1);
             this.Floors = new List<Floor>();
             for (int i = 1; i <= 20; i++)
             {
                 this.Floors.Add(new Floor(i));
             }
-            this.FloorRequests = new List<FloorRequest>();
+            this.FloorRequests = [];
         }
 
         public Floor CurrentFloor { get; set; }
@@ -22,24 +23,18 @@ namespace ElevatorApi.Models
         public List<FloorRequest> FloorRequests { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Direction Direction
-        {
-            get
-            {
-                return Direction.Up; //TODO: Implement in the next floor request story
-            }
-        }
+        public Direction Direction { get; set; }
 
         public void AddPassengerRequest(int floor)
         {
-            if (!FloorRequests.Any(req => req.Floor == floor && req.RequestType == FloorRequestType.Passenger))
+            if (!FloorRequests.Any(req => req.Floor == floor))
             {
                 FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Passenger));
             }
         }
         public void AddCallRequest(int floor)
         {
-            if (!FloorRequests.Any(req => req.Floor == floor && req.RequestType == FloorRequestType.Call))
+            if (!FloorRequests.Any(req => req.Floor == floor))
             {
                 FloorRequests.Add(new FloorRequest(floor, FloorRequestType.Call));
             }
@@ -49,7 +44,49 @@ namespace ElevatorApi.Models
         {
             get
             {
-                return new Floor(1); //TODO: Implement in the next floor request story
+                //If we're already at the requested floor, remove that request and go to the next floor
+                FloorRequests = FloorRequests.Where(x => x.Floor != CurrentFloor.Number).ToList();
+
+                var sortedRequests = FloorRequests.OrderBy(x => x.Floor).ToList();
+                if (sortedRequests.Count == 0)
+                {
+                    return CurrentFloor;
+                }
+                if (Direction == Direction.Up)
+                {
+                    var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number);
+                    if (nextHigherFloor != null)
+                    {
+                        return new Floor(nextHigherFloor.Floor);
+                    }
+                    else
+                    {
+                        Direction = Direction.Down;
+                        var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number);
+                        if (nextLowerFloor != null)
+                        {
+                            return new Floor(nextLowerFloor.Floor);
+                        }
+                    }
+                }
+                else if (Direction == Direction.Down)
+                {
+                    var nextLowerFloor = sortedRequests.LastOrDefault(x => x.Floor < CurrentFloor.Number);
+                    if (nextLowerFloor != null)
+                    {
+                        return new Floor(nextLowerFloor.Floor);
+                    }
+                    else
+                    {
+                        Direction = Direction.Up;
+                        var nextHigherFloor = sortedRequests.FirstOrDefault(x => x.Floor > CurrentFloor.Number);
+                        if (nextHigherFloor != null)
+                        {
+                            return new Floor(nextHigherFloor.Floor);
+                        }
+                    }
+                }
+                return CurrentFloor;
             }
         }
     }
