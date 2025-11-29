@@ -9,5 +9,7 @@ namespace ElevatorApi.Services.Interfaces
         Elevator CallToFloor(int number);
 
         Elevator RequestFloor(int number);
+
+        Floor GetNextFloor(int currentFloor);
     }
 }

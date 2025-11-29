@@ -69,6 +69,22 @@ namespace ElevatorApi.Controllers
             }
         }
 
+        [HttpGet("GetNextFloor")]
+        public ApiResponse<Floor> GetNextFloor(int currentFloor)
+        {
+            try
+            {
+                var floor = elevatorService.GetNextFloor(currentFloor);
+                return new ApiResponse<Floor>(floor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                UpdateHttpStatusCode(ex);
+                return new ApiResponse<Floor>(null, ex.Message);
+            }
+        }
+
         private void UpdateHttpStatusCode(Exception ex)
         {
             if (ex is ArgumentNullException || ex is ArgumentException)

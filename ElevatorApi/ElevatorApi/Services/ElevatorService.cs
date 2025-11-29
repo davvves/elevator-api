@@ -19,6 +19,33 @@ namespace ElevatorApi.Services
             return elevator;
         }
 
+        public Floor GetNextFloor(int currentFloor)
+        {
+            if (currentFloor < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(currentFloor), "currentFloor must be a positive integer");
+            }
+
+            var elevator = new Elevator();
+            var highestFloor = elevator.Floors.Max(x => x.Number);
+            if (currentFloor > highestFloor)
+            {
+                throw new ArgumentOutOfRangeException(nameof(currentFloor), $"currentFloor cannot be greater than the number of floors: {highestFloor}");
+            }
+            else
+            {
+                elevator.CurrentFloor = new Floor(currentFloor);
+            }
+
+            //Mock some requests
+            elevator.AddPassengerRequest(2);
+            elevator.AddPassengerRequest(9);
+            elevator.AddPassengerRequest(14);
+            elevator.AddCallRequest(20);
+
+            return elevator.NextFloor;
+        }
+
         public IEnumerable<FloorRequest> GetPassengerRequests()
         {
             var elevator = new Elevator();
@@ -33,7 +60,16 @@ namespace ElevatorApi.Services
 
         public Elevator RequestFloor(int number)
         {
+            if (number < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(number), "floor must be a positive integer");
+            }
             var elevator = new Elevator();
+            var highestFloor = elevator.Floors.Max(x => x.Number);
+            if (number > highestFloor)
+            {
+                throw new ArgumentOutOfRangeException(nameof(number), $"number cannot be greater than the number of floors: {highestFloor}");
+            }
 
             //Mock some passenger requests
             elevator.AddPassengerRequest(7);
