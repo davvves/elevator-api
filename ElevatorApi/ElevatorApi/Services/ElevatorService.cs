@@ -63,6 +63,8 @@ namespace ElevatorApi.Services
             elevator.AddPassengerRequest(3);
             elevator.AddPassengerRequest(12);
             elevator.AddPassengerRequest(17);
+            elevator.AddCallRequest(20);
+            elevator.AddCallRequest(5);
 
             return elevator.FloorRequests.Where(req => req.RequestType == FloorRequestType.Passenger).ToList();
         }

@@ -6,7 +6,9 @@ namespace ElevatorApi.Models
     {
         public Elevator()
         {
+            //For the purposes of this mock data the direction always starts as up
             this.Direction = Direction.Up;
+
             this.CurrentFloor = new Floor(1);
             this.Floors = new List<Floor>();
             for (int i = 1; i <= 20; i++)
