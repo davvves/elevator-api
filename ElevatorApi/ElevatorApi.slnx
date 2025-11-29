@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="ElevatorApi.Tests/ElevatorApi.Tests.csproj" Id="3f22c4e5-72c1-45f0-9428-a308ea86de02" />
   <Project Path="ElevatorApi/ElevatorApi.csproj" />
 </Solution>

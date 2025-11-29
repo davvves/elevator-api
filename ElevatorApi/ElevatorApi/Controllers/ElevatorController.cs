@@ -78,7 +78,7 @@ namespace ElevatorApi.Controllers
 
         private void UpdateHttpStatusCode(Exception ex)
         {
-            if (ex is ArgumentNullException || ex is ArgumentException)
+            if (ex is ArgumentNullException || ex is ArgumentException || ex is ArgumentOutOfRangeException)
             {
                 httpResponseWrapper.GetCurrentResponse()?.StatusCode = (int)HttpStatusCode.BadRequest;
             }
